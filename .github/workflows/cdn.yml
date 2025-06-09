@@ -1,0 +1,42 @@
+name: Copy Assets to CDN
+
+on:
+  push:
+    branches:
+      - develop  # Replace with the branch you want to monitor
+
+jobs:
+  copy-folders:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Chatwoot
+      uses: actions/checkout@v3
+
+    - name: Checkout CDN
+      uses: actions/checkout@v3
+      with:
+        repository: appifycommerce/cdn  # Replace with your username and Repo B name
+        path: cdn
+        token: ${{ secrets.CDN_REPO_TOKEN_CHATWOOT_TO_CDN }}
+
+    - name: Ensure Destination Directories Exist
+      run: |
+        mkdir -p cdn/web/chatwoot/
+        
+    - name: Copy Folders to CDN
+      run: |
+        cp -R public/packs/. cdn/web/chatwoot/
+
+    - name: Commit and Push Changes to CDN
+      working-directory: cdn
+      run: |
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        if [ -n "$(git status --porcelain)" ]; then
+          git add .
+          git commit -m "Automated sync from Accessibility"
+          git push origin main  # Replace 'main' with the default branch of the CDN repo if different
+        else
+          echo "No changes to commit"
+        fi
