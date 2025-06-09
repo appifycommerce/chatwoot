@@ -22,11 +22,11 @@ jobs:
 
     - name: Ensure Destination Directories Exist
       run: |
-        mkdir -p cdn/web/chatwoot/
+        mkdir -p cdn/web/chatwoot/packs/
         
     - name: Copy Folders to CDN
       run: |
-        cp -R public/packs/. cdn/web/chatwoot/
+        cp -R public/packs/. cdn/web/chatwoot/packs/
 
     - name: Commit and Push Changes to CDN
       working-directory: cdn
