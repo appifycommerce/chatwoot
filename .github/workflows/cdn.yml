@@ -3,7 +3,7 @@ name: Copy Assets to CDN
 on:
   push:
     branches:
-      - develop  # Replace with the branch you want to monitor
+      - sync-assets-to-cdn  # Replace with the branch you want to monitor
 
 jobs:
   copy-folders:
